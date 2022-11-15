@@ -21,14 +21,14 @@ if strtRulerUnits is not psPixels:
 fileName = "C:\Git\PS_Samples_Files\Layer Comps.psd"
 docRef = app.Open(fileName)
 
-nLayerSets = len([(i, x) for i, x in enumerate(docRef.LayerSets, 1)])
+nLayerSets = len(list(enumerate(docRef.LayerSets, 1)))
 # for some reason, len(docRef.LayerSets) return errors
 # So above list comprehension is same as below
 # nLayerSets = 0
 # for layerSet in docRef.LayerSets:
 #     nLayerSets += 1
 
-nArtLayers = len([(i, x) for i, x in enumerate(docRef.LayerSets[nLayerSets].ArtLayers, 1)])
+nArtLayers = len(list(enumerate(docRef.LayerSets[nLayerSets].ArtLayers, 1)))
 
 active_layer = docRef.ActiveLayer = docRef.LayerSets[nLayerSets].ArtLayers[nArtLayers]
 # print(docRef.ActiveLayer.Name)

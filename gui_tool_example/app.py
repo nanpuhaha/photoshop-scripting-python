@@ -70,61 +70,53 @@ class MainUIClass(QDialog):
             in_resolution = self.ui.resolution_text.text()
             in_resample = self.ui.resample_combobox.currentIndex()
 
-            if in_dir is not "":
-                if os.path.isdir(in_dir):
-                    if self.ui.aspect_ratio_checkbox.isChecked():
-                        if in_width is not "":
-                            for filename in os.listdir(in_dir):
-                                if filename.lower().endswith(".png") \
-                                        or filename.lower().endswith(".jpg") \
-                                        or filename.lower().endswith(".jpeg") \
-                                        or filename.lower().endswith(".tif") \
-                                        or filename.lower().endswith(".tiff") \
-                                        or filename.lower().endswith(".gif"):
-                                    self.filestoprocess.append(os.path.join(in_dir, filename))
-                                    continue
-                                else:
-                                    continue
-                            if len(self.filestoprocess) > 0:
-                                # Got all files to process, process in thread
-                                self.myworker.process_args(self.filestoprocess, in_width, in_resolution, in_resample)
-                                self.myworker.start()
-                            else:
-                                print("No files in selected directory")
-                        else:
-                            if in_width is "":
-                                print("Width is empty")
-                    else:
-                        if in_width is not "" and in_height is not "":
-                            for filename in os.listdir(in_dir):
-                                if filename.lower().endswith(".png") \
-                                        or filename.lower().endswith(".jpg") \
-                                        or filename.lower().endswith(".jpeg") \
-                                        or filename.lower().endswith(".tif") \
-                                        or filename.lower().endswith(".tiff") \
-                                        or filename.lower().endswith(".gif"):
-                                    self.filestoprocess.append(os.path.join(in_dir, filename))
-                                    continue
-                                else:
-                                    continue
-                            if len(self.filestoprocess) > 0:
-                                # Got all files to process, process in thread
-                                print("2")
-                                self.myworker.process_args2(self.filestoprocess, in_width, in_height, in_resolution,
-                                                            in_resample)
-                                self.myworker.start()
-                            else:
-                                print("No files in selected directory")
-                        else:
-                            if in_width is "":
-                                print("Width is empty")
-                            if in_height is "":
-                                print("Height is empty")
-                else:
-                    print("Input directory does not exist")
-            else:
+            if in_dir is "":
                 print("Input directory is empty")
 
+            elif os.path.isdir(in_dir):
+                if self.ui.aspect_ratio_checkbox.isChecked():
+                    if in_width is "":
+                        print("Width is empty")
+                    else:
+                        for filename in os.listdir(in_dir):
+                            if filename.lower().endswith(".png") \
+                                            or filename.lower().endswith(".jpg") \
+                                            or filename.lower().endswith(".jpeg") \
+                                            or filename.lower().endswith(".tif") \
+                                            or filename.lower().endswith(".tiff") \
+                                            or filename.lower().endswith(".gif"):
+                                self.filestoprocess.append(os.path.join(in_dir, filename))
+                        if len(self.filestoprocess) > 0:
+                            # Got all files to process, process in thread
+                            self.myworker.process_args(self.filestoprocess, in_width, in_resolution, in_resample)
+                            self.myworker.start()
+                        else:
+                            print("No files in selected directory")
+                elif in_width is not "" and in_height is not "":
+                    for filename in os.listdir(in_dir):
+                        if filename.lower().endswith(".png") \
+                                            or filename.lower().endswith(".jpg") \
+                                            or filename.lower().endswith(".jpeg") \
+                                            or filename.lower().endswith(".tif") \
+                                            or filename.lower().endswith(".tiff") \
+                                            or filename.lower().endswith(".gif"):
+                            self.filestoprocess.append(os.path.join(in_dir, filename))
+                        continue
+                    if len(self.filestoprocess) > 0:
+                        # Got all files to process, process in thread
+                        print("2")
+                        self.myworker.process_args2(self.filestoprocess, in_width, in_height, in_resolution,
+                                                    in_resample)
+                        self.myworker.start()
+                    else:
+                        print("No files in selected directory")
+                else:
+                    if in_width is "":
+                        print("Width is empty")
+                    if in_height is "":
+                        print("Height is empty")
+            else:
+                print("Input directory does not exist")
         except Exception as erro:
             print(erro)
 
@@ -180,7 +172,7 @@ class WorkerThread(QThread):
             psNoResampling = 1  # from enum PsResampleMethod
 
             for file in self.filestoprocess:
-                print("thread: " + file)
+                print(f"thread: {file}")
                 docRef = self.psapp.Open(file)
 
                 # if height is given, don't maintain aspect ratio

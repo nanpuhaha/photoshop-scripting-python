@@ -8,7 +8,7 @@ from comtypes.client import GetActiveObject, CreateObject
 # app = Dispatch('Photoshop.Application')
 app = GetActiveObject("Photoshop.Application")
 
-if len([(i, x) for i, x in enumerate(app.Documents, 1)]) > 0:
+if list(enumerate(app.Documents, 1)):
     if app.ActiveDocument.ActiveLayer.IsBackgroundLayer == False:
 
         psPixels = 1

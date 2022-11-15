@@ -7,7 +7,7 @@ from comtypes.client import GetActiveObject, CreateObject
 app = GetActiveObject("Photoshop.Application")
 
 # create new document if no document is opened
-if len([(i, x) for i, x in enumerate(app.Documents, 1)]) < 1:
+if not list(enumerate(app.Documents, 1)):
     psPixels = 1
     strtRulerUnits = app.Preferences.RulerUnits
     app.Preferences.RulerUnits = psPixels

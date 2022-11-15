@@ -12,6 +12,8 @@ app = GetActiveObject("Photoshop.Application")
 fgColor = app.ForegroundColor
 
 fgRGBColor = fgColor.RGB
-print("Red:" + str(fgRGBColor.Red) + " Green:" + str(fgRGBColor.Green) + " Blue:" + str(fgRGBColor.Blue))
+print(
+    f"Red:{str(fgRGBColor.Red)} Green:{str(fgRGBColor.Green)} Blue:{str(fgRGBColor.Blue)}"
+)
 
 

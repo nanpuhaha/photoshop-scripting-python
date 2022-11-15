@@ -8,11 +8,7 @@ from win32com.client import Dispatch, GetActiveObject, GetObject
 # app = GetObject(Class="Photoshop.Application")
 app = GetActiveObject("Photoshop.Application")
 
-if len(app.Documents) < 1:
-    docRef = app.Documents.Add()
-else:
-    docRef = app.ActiveDocument
-
+docRef = app.Documents.Add() if len(app.Documents) < 1 else app.ActiveDocument
 if len(docRef.Layers) < 2:
     docRef.ArtLayers.Add()
 
